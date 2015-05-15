@@ -12,8 +12,17 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>autoschema</name>
-    <url>http://maven.apache.org</url>
+    <name>AutoSchema</name>
+    <description>Annotation Processor to generate Java POJO's from Json file example</description>
+    <inceptionYear>2015</inceptionYear>
+    <url>https://github.com/cchacin/autoschema</url>
+
+    <scm>
+        <url>scm:git:git@github.com:cchacin/autoschema.git</url>
+        <connection>scm:git:git@github.com:cchacin/autoschema.git</connection>
+        <developerConnection>scm:git:git@github.com:cchacin/autoschema.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <maven.compiler.target>1.7</maven.compiler.target>
@@ -57,17 +66,20 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <check>true</check>
+                    <format>xml</format>
+                    <aggregate>true</aggregate>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>com.google.auto.service</groupId>
-            <artifactId>auto-service</artifactId>
-            <version>1.0-rc2</version>
-            <optional>true</optional>
-        </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -81,33 +93,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.4</version>
-        </dependency>
-
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>1.10.19</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>2.0.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.org.lidalia</groupId>
-            <artifactId>slf4j-test</artifactId>
-            <version>1.1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -117,4 +105,28 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <!-- Travis CI -->
+        <profile>
+            <id>travis</id>
+
+            <activation>
+                <property>
+                    <name>env.TRAVIS</name>
+                    <value>true</value>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.eluder.coveralls</groupId>
+                        <artifactId>coveralls-maven-plugin</artifactId>
+                        <version>3.1.0</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

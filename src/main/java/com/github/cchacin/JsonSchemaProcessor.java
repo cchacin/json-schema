@@ -2,7 +2,6 @@ package com.github.cchacin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.auto.service.AutoService;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -10,7 +9,6 @@ import org.apache.velocity.app.VelocityEngine;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
@@ -25,7 +23,6 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 
-@AutoService(Processor.class)
 public class JsonSchemaProcessor extends AbstractProcessor {
 
     private Filer filer;
@@ -94,7 +91,6 @@ public class JsonSchemaProcessor extends AbstractProcessor {
                 processingEnv.getMessager().printMessage(
                         Diagnostic.Kind.NOTE,
                         "creating source file: " + jfo.toUri());
-
                 final Writer writer = jfo.openWriter();
 
                 processingEnv.getMessager().printMessage(

@@ -12,25 +12,26 @@ import static java.util.Arrays.asList;
 public class JsonSchemaProcessorTest {
 
     @Test
-    public void test() throws Exception {
+    public void testSimple() throws Exception {
         final JavaFileObject source = forSourceLines(
-                "fixtures.Sample",
+                "test.Sample",
                 "package fixtures;",
                 "",
                 "import com.github.cchacin.JsonSchema;",
                 "",
-                "@JsonSchema(path = \"sample.json\")",
+                "@JsonSchema(path = \"simple.json\")",
                 "public interface Sample {",
                 "}"
         );
         final JavaFileObject expected = forSourceLines(
-                "fixtures.SampleJsonSchema",
+                "test.SampleJsonSchema",
                 "package fixtures;",
                 "",
                 "public final class SampleJsonSchema {",
                 "    private Integer id;",
                 "    private String name;",
                 "}"
+
         );
         assert_().about(javaSources())
                 .that(asList(source))
