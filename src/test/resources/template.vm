@@ -1,0 +1,7 @@
+package ${packageName};
+
+public final class ${className}JsonSchema {
+    #foreach($field in $fields)
+    private String $field;
+    #end
+}
