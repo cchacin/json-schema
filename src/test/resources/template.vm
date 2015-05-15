@@ -1,7 +1,12 @@
 package ${packageName};
 
 public final class ${className}JsonSchema {
-    #foreach($field in $fields)
-    private String $field;
+    #foreach($element in $json.fields())
+        #if($element.value.nodeType == "STRING")
+            #set ($type = "String")
+        #elseif($element.value.nodeType == "NUMBER")
+            #set ($type = "Integer")
+        #end
+    private $type $element.key;
     #end
 }

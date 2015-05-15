@@ -28,7 +28,7 @@ public class JsonSchemaProcessorTest {
                 "package fixtures;",
                 "",
                 "public final class SampleJsonSchema {",
-                "    private String id;",
+                "    private Integer id;",
                 "    private String name;",
                 "}"
         );
