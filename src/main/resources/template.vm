@@ -9,7 +9,7 @@ public final class ${className}JsonSchema {
             #elseif($element.value.nodeType == "NUMBER")
                 #set ($type = "Integer")
             #end
-        private $type $element.key;
+        public $type $element.key;
             #end
     #end
 }
