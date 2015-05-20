@@ -21,37 +21,41 @@ import static java.util.Arrays.asList;
 
 public class JsonSchemaProcessorStepDefs {
 
-    private JavaFileObject actual;
-    private CompileTester compileTester;
-    private SuccessfulCompilationClause successfulCompilationClause;
+  private JavaFileObject actual;
+  private CompileTester compileTester;
+  private SuccessfulCompilationClause successfulCompilationClause;
 
-    @Given("^I have the following json in \"(.*?)\":$")
-    public void i_have_the_following_json_in(final String jsonFilename, final String jsonContent) throws Throwable {
-        try (final Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream("target/test-classes/" + jsonFilename), Charset.defaultCharset()))) {
-            writer.write(jsonContent);
-        }
+  @Given("^I have the following json in \"(.*?)\":$")
+  public void i_have_the_following_json_in(final String jsonFilename, final String jsonContent)
+      throws Throwable {
+    try (final Writer writer =
+        new BufferedWriter(new OutputStreamWriter(new FileOutputStream("target/test-classes/"
+            + jsonFilename), Charset.defaultCharset()))) {
+      writer.write(jsonContent);
     }
+  }
 
-    @Given("^I have the following class \"(.*?)\":$")
-    public void i_have_the_following_class(final String classname, final String classContent) throws Throwable {
-        actual = forSourceString(classname, classContent);
-    }
+  @Given("^I have the following class \"(.*?)\":$")
+  public void i_have_the_following_class(final String classname, final String classContent)
+      throws Throwable {
+    actual = forSourceString(classname, classContent);
+  }
 
-    @When("^I run the annotation processor$")
-    public void i_run_the_annotation_processor() throws Throwable {
-        compileTester = assert_().about(javaSources())
-                .that(asList(actual))
-                .processedWith(new JsonSchemaProcessor());
-    }
+  @When("^I run the annotation processor$")
+  public void i_run_the_annotation_processor() throws Throwable {
+    compileTester =
+        assert_().about(javaSources()).that(asList(actual))
+            .processedWith(new JsonSchemaProcessor());
+  }
 
-    @Then("^should compiles without errors$")
-    public void should_compiles_without_errors() throws Throwable {
-        successfulCompilationClause = compileTester.compilesWithoutError();
-    }
+  @Then("^should compiles without errors$")
+  public void should_compiles_without_errors() throws Throwable {
+    successfulCompilationClause = compileTester.compilesWithoutError();
+  }
 
-    @Then("^the result classes in \"(.*?)\" should be:$")
-    public void the_result_classes_in_should_be(final String classname, final String classContent) throws Throwable {
-        successfulCompilationClause.and().generatesSources(forSourceLines(classname, classContent));
-    }
+  @Then("^the result classes in \"(.*?)\" should be:$")
+  public void the_result_classes_in_should_be(final String classname, final String classContent)
+      throws Throwable {
+    successfulCompilationClause.and().generatesSources(forSourceLines(classname, classContent));
+  }
 }

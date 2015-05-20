@@ -1,5 +1,5 @@
 Feature: Annotation Processor to generate Java POJO's from Json file example
-  
+
   Scenario: Simple
     Given I have the following json in "simple.json":
     """
