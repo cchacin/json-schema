@@ -36,7 +36,7 @@ public class JsonSchemaProcessor extends AbstractProcessor {
     final Properties props = new Properties();
     final URL url = getClass().getClassLoader().getResource("velocity.properties");
     try {
-      props.load(url.openStream());
+      props.load(url != null ? url.openStream() : null);
     } catch (IOException e) {
       e.printStackTrace();
     }

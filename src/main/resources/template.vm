@@ -1,15 +1,35 @@
+#macro ( writePackage $packageName )
 package ${packageName};
+#end
 
-
-public final class ${className}JsonSchema {
-#foreach($element in $json.fields())
-    #if($element.value.isValueNode())
+#macro ( writeFields $elements )
+    #foreach($element in $elements)
         #if($element.value.nodeType == "STRING")
             #set ($type = "String")
         #elseif($element.value.nodeType == "NUMBER")
             #set ($type = "Integer")
+        #elseif($element.value.nodeType == "BOOLEAN")
+            #set ($type = "Boolean")
+        #elseif($element.value.nodeType == "OBJECT")
+            #writeInnerClass ($element.key $element.value )
+            #set ($type = "${element.key}DTO")
         #end
-    public $type $element.key;
+    #writeField ($type $element.key)
     #end
 #end
+
+#macro ( writeField $type $name )
+public $type $name;
+#end
+
+#macro ( writeInnerClass $className $node )
+public final class ${className}DTO {
+#writeFields ( $node.fields() )
+}
+#end
+
+#writePackage ( $packageName )
+
+public final class ${className}JsonSchema {
+#writeFields ( $json.fields() )
 }
