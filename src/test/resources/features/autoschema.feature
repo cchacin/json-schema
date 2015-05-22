@@ -52,11 +52,36 @@ Feature: Annotation Processor to generate Java POJO's from Json file example
     public final class SampleJsonSchema {
       public Integer id;
       public String name;
+      public OtherObjectDTO otherObject;
 
       public final class OtherObjectDTO {
         public Integer a;
         public String b;
       }
-      public OtherObjectDTO otherObject;
+    }
+    """
+
+  Scenario: Array object
+    Given I have the following json in "simple.json":
+    """
+    [
+      {
+        "id": 1,
+        "name": "name"
+      }
+    ]
+    """
+    When I run the annotation processor
+    Then should compiles without errors
+    And the result classes in "test.SampleJsonSchema" should be:
+    """
+    package test;
+
+    public final class SampleJsonSchema {
+      public final class Wrapper {
+        public Integer id;
+        public String name;
+      }
+      public java.util.Collection<Wrapper> wrapper;
     }
     """

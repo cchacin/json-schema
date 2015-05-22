@@ -3,33 +3,45 @@ package ${packageName};
 #end
 
 #macro ( writeFields $elements )
-    #foreach($element in $elements)
-        #if($element.value.nodeType == "STRING")
-            #set ($type = "String")
-        #elseif($element.value.nodeType == "NUMBER")
-            #set ($type = "Integer")
-        #elseif($element.value.nodeType == "BOOLEAN")
-            #set ($type = "Boolean")
-        #elseif($element.value.nodeType == "OBJECT")
-            #writeInnerClass ( ${display.capitalize($element.key)} $element.value )
-            #set ($type = "${display.capitalize($element.key)}DTO")
-        #end
-    #writeField ($type $element.key)
+  #foreach($element in $elements)
+    #if($element.value.nodeType == "STRING")
+      #writeField ("String" $element.key)
+    #elseif($element.value.nodeType == "NUMBER")
+      #writeField ("Integer" $element.key)
+    #elseif($element.value.nodeType == "BOOLEAN")
+      #writeField ("Boolean" $element.key)
+    #elseif($element.value.nodeType == "OBJECT")
+      #set ($type = "${display.capitalize($element.key)}DTO")
+      #writeField ($type $element.key)
+      #writeInnerClass ( $type $element.value )
+    #elseif($element.value.nodeType == "ARRAY")
+      #set ($type = "${display.capitalize($element.key)}Wrapper")
+      #writeInnerClass ( $type $element.value )
+      #set ($type ="java.util.Collection
+      <${type}Wrapper>")
+      #writeField ($type $element.value)
     #end
+  #end
 #end
 
 #macro ( writeField $type $name )
-public $type $name;
+    public $type $name;
 #end
 
 #macro ( writeInnerClass $className $node )
-public final class ${className}DTO {
-#writeFields ( $node.fields() )
-}
+    public final class ${className} {
+  #writeFields ( $node.fields() )
+    }
 #end
 
 #writePackage ( $packageName )
 
-public final class ${className}JsonSchema {
+    public final class ${className}JsonSchema {
+#if($json.nodeType == "ARRAY")
+  #set ($type = "Wrapper")
+  #writeInnerClass ( $type $json.get(0) )
+  #set ($type = "java.util.Collection<Wrapper>")
+  #writeField ($type "wrapper")
+#end
 #writeFields ( $json.fields() )
-}
+    }
