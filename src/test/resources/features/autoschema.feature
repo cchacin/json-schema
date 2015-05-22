@@ -53,10 +53,10 @@ Feature: Annotation Processor to generate Java POJO's from Json file example
       public Integer id;
       public String name;
 
-      public final class otherObjectDTO {
+      public final class OtherObjectDTO {
         public Integer a;
         public String b;
       }
-      public otherObjectDTO otherObject;
+      public OtherObjectDTO otherObject;
     }
     """

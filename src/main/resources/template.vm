@@ -11,8 +11,8 @@ package ${packageName};
         #elseif($element.value.nodeType == "BOOLEAN")
             #set ($type = "Boolean")
         #elseif($element.value.nodeType == "OBJECT")
-            #writeInnerClass ($element.key $element.value )
-            #set ($type = "${element.key}DTO")
+            #writeInnerClass ( ${display.capitalize($element.key)} $element.value )
+            #set ($type = "${display.capitalize($element.key)}DTO")
         #end
     #writeField ($type $element.key)
     #end

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.tools.generic.DisplayTool;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -81,6 +82,7 @@ public class JsonSchemaProcessor extends AbstractProcessor {
         final JsonNode node =
             new ObjectMapper().readTree(Thread.currentThread().getContextClassLoader()
                 .getResourceAsStream(jsonSchema.path()));
+        vc.put("display",new DisplayTool());
         vc.put("json", node);
 
         vc.put("className", className);
