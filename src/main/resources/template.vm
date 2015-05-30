@@ -15,11 +15,10 @@ package ${packageName};
       #writeField ($type $element.key)
       #writeInnerClass ( $type $element.value )
     #elseif($element.value.nodeType == "ARRAY")
-      #set ($type = "${display.capitalize($element.key)}Wrapper")
-      #writeInnerClass ( $type $element.value )
       #set ($type ="java.util.Collection
-      <${type}Wrapper>")
-      #writeField ($type $element.value)
+      <${display.capitalize($element.key)}DTO>")
+      #writeField ($type "${element.key}DTO")
+      #writeInnerClass ( "${display.capitalize($element.key)}DTO" $element.value.get(0) )
     #end
   #end
 #end
@@ -38,10 +37,10 @@ package ${packageName};
 
     public final class ${className}JsonSchema {
 #if($json.nodeType == "ARRAY")
+  #set ($type = "java.util.Collection<Wrapper>")
+  #writeField ( $type "wrapper" )
   #set ($type = "Wrapper")
   #writeInnerClass ( $type $json.get(0) )
-  #set ($type = "java.util.Collection<Wrapper>")
-  #writeField ($type "wrapper")
 #end
 #writeFields ( $json.fields() )
     }

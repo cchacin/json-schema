@@ -1,4 +1,5 @@
 Feature: Annotation Processor to generate Java POJO's from Json file example
+
   Background:
     Given I have the following class "test.Sample":
     """
@@ -61,7 +62,7 @@ Feature: Annotation Processor to generate Java POJO's from Json file example
     }
     """
 
-  Scenario: Array object
+  Scenario: Array root object
     Given I have the following json in "simple.json":
     """
     [
@@ -78,10 +79,40 @@ Feature: Annotation Processor to generate Java POJO's from Json file example
     package test;
 
     public final class SampleJsonSchema {
+      public java.util.Collection<Wrapper> wrapper;
       public final class Wrapper {
         public Integer id;
         public String name;
       }
-      public java.util.Collection<Wrapper> wrapper;
+    }
+    """
+
+  Scenario: Array object
+    Given I have the following json in "simple.json":
+    """
+    {
+      "id": "123",
+      "books": [
+        {
+          "id": 1,
+          "name": "name"
+        }
+      ]
+    }
+    """
+    When I run the annotation processor
+    Then should compiles without errors
+    And the result classes in "test.SampleJsonSchema" should be:
+    """
+    package test;
+
+    public final class SampleJsonSchema {
+      public String id;
+      public java.util.Collection<BooksDTO> booksDTO;
+
+      public final class BooksDTO {
+        public Integer id;
+        public String name;
+      }
     }
     """
